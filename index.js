@@ -241,7 +241,8 @@ client.on('message', async message => {
 	if (message.content.includes('!p')) {
 		var messagec = message.content;
 		var message1 = messagec.replace("!p ","");
-		var message2 = message1.replace(/\s+/g, '-');
+		var message3 = message1.replace(/\s+/g, '-');
+		var message2 = message3.toLowerCase();
 		var data = require("./playerlist.json")
 		var website1 = data[`${message2}`].link;
 		website = website1.replace(/\s+/g, '-');
