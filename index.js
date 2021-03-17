@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 const client = new Discord.Client()
 const fs = require('fs');
 
+
 const grabPage3 = async () => {
 	const browser = await puppeteer.launch()
 	const page = await browser.newPage()
@@ -33,6 +34,16 @@ const grabPage2 = async () => {
 }
 client.on('ready', () => {
 	console.log('I am ready!')
+	const activities_list = [
+    "For Drops", 
+    "NBA TOP SHOT", 
+    "For !help",
+    "People Win"
+    ]; // creates an arraylist containing phrases you want your bot to switch through.
+    setInterval(() => {
+        const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
+        client.user.setActivity(activities_list[index], { type: 'WATCHING' }); // sets bot's activities to one of the phrases in the arraylist.
+    }, 5000); // Runs this every 10 seconds.
 })
 //Help Command
 client.on('message', async message => {
