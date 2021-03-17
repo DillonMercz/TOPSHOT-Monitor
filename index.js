@@ -37,18 +37,58 @@ client.on('ready', () => {
 //Help Command
 client.on('message', async message => {
 	if (message.content.includes('!help')) {
+		var help = '**Command: !p** \n Get The moments of a player. Player name all lower case. \n\n!p Ex: !p lebron james'+
+
+'\n\n **Command: !s** \n Store a Specific Moment. Easiest is to just copy straight from the website. The moment name has to be seperated by a comma. \n\n !s EX: !s KYLE ANDERSON Dunk Base Set (Series 2), https://www.nbatopshot.com/listings/p2p/208ae30a-a4fe-42d4-9e51-e6fd1ad2a7a9+a3cd9d63-7ca6-41c6-b8ee-a10733d02a96'+
+
+' \n\n **Command: !m** \n Recall the moment stored using !s command. \n\n !m EX: KYLE ANDERSON Dunk Base Set (Series 2)'+
+
+'\n\n **Command: !add** \n Add an abbreviation for a moment, for personal use, and ease of access. comma comes after abbreviation. \n\n !add EX: !add KA, https://www.nbatopshot.com/listings/p2p/208ae30a-a4fe-42d4-9e51-e6fd1ad2a7a9+a3cd9d63-7ca6-41c6-b8ee-a10733d02a96'+
+
+'\n\n **Command: !u**  \n Use The Added Abbreviation. \n\n !u EX: !u KA'+
+'\n\n **Command: !list** \n Get The List Of Stored Abbreviations. \n\n !list Ex: !list'
 		const embed = new Discord.RichEmbed()
 			// Set the title of the field
 			.setTitle('Help And Commands')
 			// Set the color of the embed
 			.setColor(0xff0000)
 			// Set the main content of the embed
-			.setDescription(help)
+			.setDescription(help.toString())
 		//console.log('message sent')
 		// Send the embed to the same channel as the message
 		message.channel.send(embed)
 		}
 	})
+//Get List
+client.on('message', async message => {
+	if (message.content.includes('!list')) {
+		var sender = message.author.username + '#'+ message.author.discriminator;
+		const fs = require('fs')
+		fs.readFile('./shortcuts.json', 'utf8', function (err,data1) {
+		  if (err) {
+		    return console.log(err);
+		  }
+		  var data1 = data1 + "}"
+		  const data2 = JSON.parse(data1)
+
+		  var listitems = data2[sender]
+		  const textFormat = Object.entries(listitems)
+			  .map(([key, value]) => key + ': ' + value)
+			  .join('\n');
+		  const embed = new Discord.RichEmbed()
+			// Set the title of the field
+			.setTitle('Here Is The Moments You Have Stored!')
+			// Set the color of the embed
+			.setColor(0xff0000)
+			// Set the main content of the embed
+			.setDescription(textFormat)
+		  //console.log('message sent')
+	     // Send the embed to the same channel as the message
+		  message.channel.send(embed)
+		})
+	}
+})
+
 //Call Abbreviation
 client.on('message', async message => {
 	if (message.content.includes('!u')) {
