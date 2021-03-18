@@ -48,16 +48,17 @@ client.on('ready', () => {
 //Help Command
 client.on('message', async message => {
 	if (message.content.includes('!help')) {
-		var help = '**Command: !p** \n Get The moments of a player. Player name all lower case. \n\n!p Ex: !p lebron james'+
+		var help = '**Command: !p** \n Get The moments of a player. Player name all lower case. \n!p EXAMPLE: !p lebron james'+
 
-'\n\n **Command: !s** \n Store a Specific Moment. Easiest is to just copy straight from the website. The moment name has to be seperated by a comma. \n\n !s EX: !s KYLE ANDERSON Dunk Base Set (Series 2), https://www.nbatopshot.com/listings/p2p/208ae30a-a4fe-42d4-9e51-e6fd1ad2a7a9+a3cd9d63-7ca6-41c6-b8ee-a10733d02a96'+
+'\n\n **Command: !s** \n Store a Specific Moment. Easiest is to just copy straight from the website. The moment name has to be seperated by a comma. \n !s EXAMPLE: !s KYLE ANDERSON Dunk Base Set (Series 2), https://www.nbatopshot.com/listings/p2p/208ae30a-a4fe-42d4-9e51-e6fd1ad2a7a9+a3cd9d63-7ca6-41c6-b8ee-a10733d02a96'+
 
-' \n\n **Command: !m** \n Recall the moment stored using !s command. \n\n !m EX: KYLE ANDERSON Dunk Base Set (Series 2)'+
+' \n\n **Command: !m** \n Recall the moment stored using !s command. \n !m EXAMPLE: KYLE ANDERSON Dunk Base Set (Series 2)'+
 
-'\n\n **Command: !add** \n Add an abbreviation for a moment, for personal use, and ease of access. comma comes after abbreviation. \n\n !add EX: !add KA, https://www.nbatopshot.com/listings/p2p/208ae30a-a4fe-42d4-9e51-e6fd1ad2a7a9+a3cd9d63-7ca6-41c6-b8ee-a10733d02a96'+
+'\n\n **Command: !add** \n Add an abbreviation for a moment, for personal use, and ease of access. comma comes after abbreviation. \n !add EXAMPLE: !add KA, https://www.nbatopshot.com/listings/p2p/208ae30a-a4fe-42d4-9e51-e6fd1ad2a7a9+a3cd9d63-7ca6-41c6-b8ee-a10733d02a96'+
 
-'\n\n **Command: !u**  \n Use The Added Abbreviation. \n\n !u EX: !u KA'+
-'\n\n **Command: !list** \n Get The List Of Stored Abbreviations. \n\n !list Ex: !list'
+'\n\n **Command: !u**  \n Use The Added Abbreviation. \n !u EXAMPLE: !u KA'+
+'\n\n **Command: !list** \n Get The List Of Stored Abbreviations. \n !list EXAMPLE: !list'+
+'\n\n **Command: !rm** \n Remove a Previously Stored Abbreviation. \n !rm EXAMPLE: !rm KA'
 		const embed = new Discord.RichEmbed()
 			// Set the title of the field
 			.setTitle('Help And Commands')
@@ -70,6 +71,42 @@ client.on('message', async message => {
 		message.channel.send(embed)
 		}
 	})
+client.on('message', async message => {
+	if (message.content.includes('!rm')) {
+		var messagec = message.content
+		var sender = message.author.username + '#'+ message.author.discriminator;
+		var message1 = messagec.replace("!rm ","");
+		const fs = require('fs')
+		fs.readFile('./shortcuts.json', 'utf8', function (err,data1) {
+		  if (err) {
+		    return console.log(err);
+		  }
+		  var data1 = data1 + "}"
+		  const data2 = JSON.parse(data1)
+		  delete data2[sender][message1]
+		  var data3 = JSON.stringify(data2)
+	        var data3 = data3.replace(/\}([^}]*)$/,'')
+	        fs.writeFile("./shortcuts.json", data3, (err) => { 
+			  if (err) 
+			    console.log(err);})
+
+			// We can create embeds using the MessageEmbed constructor
+			// Read more about all that you can do with the constructor
+			// over at https://discord.js.org/#/docs/main/stable/class/RichEmbed
+			const embed = new Discord.RichEmbed()
+				// Set the title of the field
+				.setTitle("Abbreviation Has Been Removed!")
+				// Set the color of the embed
+				.setColor(0xff0000)
+				// Set the main content of the embed
+				.setDescription('Brought To You By The NBA Top Shot Pros')
+			// Send the embed to the same channel as the message
+			message.channel.send(embed);
+	})
+	}
+})
+
+
 //Get List
 client.on('message', async message => {
 	if (message.content.includes('!list')) {
